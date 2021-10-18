@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { ExcelController } from './excel.controller';
 import { ExcelProcessor } from './excel.processor';
 import { ExcelGateway } from './excel.gateway';
+import { ExcelService } from './excel.service';
 
 @Module({
   imports: [
@@ -10,7 +11,7 @@ import { ExcelGateway } from './excel.gateway';
       name: 'bulkInsert',
     }),
   ],
-  providers: [ExcelProcessor, ExcelGateway],
+  providers: [ExcelProcessor, ExcelGateway, ExcelService],
   exports: [],
   controllers: [ExcelController],
 })

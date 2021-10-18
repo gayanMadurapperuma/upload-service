@@ -1,4 +1,3 @@
-import { InjectQueue } from '@nestjs/bull';
 import {
   Controller,
   Post,
@@ -6,20 +5,15 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Queue } from 'bull';
+import { ExcelService } from './excel.service';
 
 @Controller('bulk')
 export class ExcelController {
-  constructor(
-    @InjectQueue('bulkInsert') private readonly bulkInsertQueue: Queue,
-  ) {}
+  constructor(private excelService: ExcelService) {}
 
   @Post('student')
   @UseInterceptors(FileInterceptor('file'))
   async bulkInsertStudent(@UploadedFile() file: Express.Multer.File) {
-    const job = await this.bulkInsertQueue.add('bulk', {
-      file,
-    });
-    return { job };
+    return await this.excelService.fileHandler(file);
   }
 }
